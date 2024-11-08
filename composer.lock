@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb96e497f439f00251fbe77225fbef89",
+    "content-hash": "2c3cf93ac5a6fc68a38c25d2324ca10b",
     "packages": [
         {
             "name": "jawira/case-converter",
@@ -2445,9 +2445,9 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
