@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Thvvger\RequestValidator\Services\FileGenerator;
 
-#[AsCommand(name: 'make:request-validator', description: 'Create a request class for validation')]
+#[AsCommand(name: 'make:request', description: 'Create a request class for validation')]
 class GenerateClassCommand extends Command
 {
     private FileGenerator $fileGenerator;
