@@ -1,0 +1,30 @@
+{
+    "name": "thvvger/symfony-request-validator",
+    "version": "0.1.0",
+    "description": "Validate symfony request and return JSON response",
+    "type": "symfony-bundle",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "jawira/case-converter": "^3.5",
+        "symfony/validator": "^7.1",
+        "symfony/http-foundation": "^7.1",
+        "symfony/framework-bundle": "^7.1",
+        "symfony/console": "^7.1"
+    },
+    "require-dev": {
+        "symfony/console": "^6.4|^7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Thvvger\\RequestValidator\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Larry-Bill ADJE",
+            "email": "thvger@gmail.com"
+        }
+    ]
+}
