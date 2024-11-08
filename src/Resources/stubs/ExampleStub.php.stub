@@ -1,0 +1,10 @@
+<?php
+
+namespace {{ Namespace }};
+
+use Thvvger\RequestValidator\FormRequest\{{ BaseClass }};
+
+class {{ ClassName }} extends {{ BaseClass }}
+{
+
+}

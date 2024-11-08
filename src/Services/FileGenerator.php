@@ -21,9 +21,10 @@ class FileGenerator
         string $namespace = 'App\\Request'
     ): void {
         $stubPath = __DIR__ . '/../Resources/stubs/ExampleStub.php.stub';
+
         $content = file_get_contents($stubPath);
 
-        $baseClass = $hasFile ? 'AbstractFormRequest' : 'AbstractJsonRequest';
+        $baseClass = $hasFile ? 'FileRequestValidator' : 'RequestValidator';
 
         // Replace placeholders with actual values
         $content = str_replace(
