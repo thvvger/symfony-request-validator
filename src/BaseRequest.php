@@ -60,18 +60,12 @@ class BaseRequest
         }
 
         $errors = [];
-        foreach ($violations as $violation) {
-            $attribute = self::snakeCase($violation->getPropertyPath());
-            $errors[] = [
-                'property' => $attribute,
-                'value' => $violation->getInvalidValue(),
-                'message' => $violation->getMessage(),
-            ];
-        }
+        foreach ($violations as $violation)
+            $errors[$violation->getPropertyPath()] = $violation->getMessage();
 
         $response = new JsonResponse([
             'message' => $violations[0]->getPropertyPath()  . ' ' . $violations[0]->getMessage(),
-            'errorsList' => $errors
+            'errors' => $errors
         ], Response::HTTP_BAD_REQUEST);
 
         $response->send();
