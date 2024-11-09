@@ -17,14 +17,13 @@ class FileGenerator
 
     public function generateClass(
         string $className,
-        string $hasFile,
         string $namespace = 'App\\Request'
     ): void {
         $stubPath = __DIR__ . '/../Resources/stubs/ExampleStub.php.stub';
 
         $content = file_get_contents($stubPath);
 
-        $baseClass = $hasFile ? 'FileRequestValidator' : 'RequestValidator';
+        $baseClass = 'BaseRequest';
 
         // Replace placeholders with actual values
         $content = str_replace(

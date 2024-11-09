@@ -2,7 +2,7 @@
 
 namespace {{ Namespace }};
 
-use Thvvger\RequestValidator\FormRequest\{{ BaseClass }};
+use Thvvger\RequestValidator\{{ BaseClass }};
 
 class {{ ClassName }} extends {{ BaseClass }}
 {

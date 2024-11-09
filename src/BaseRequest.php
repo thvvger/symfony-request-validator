@@ -1,16 +1,16 @@
 <?php
 
-namespace Thvvger\RequestValidator\FormRequest;
+namespace Thvvger\RequestValidator;
 
 use Jawira\CaseConverter\Convert;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class RequestValidator
+class BaseRequest
 {
     protected array $errors = [];
 
