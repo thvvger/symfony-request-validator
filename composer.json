@@ -6,9 +6,9 @@
     "prefer-stable": true,
     "require": {
         "jawira/case-converter": "^3.5",
-        "symfony/validator": "^6.0",
-        "symfony/http-foundation": "^6.0",
-        "symfony/framework-bundle": "^6.1",
+        "symfony/validator": ">=6.0",
+        "symfony/http-foundation": ">=6.0",
+        "symfony/framework-bundle": ">=6.1",
         "symfony/console": ">=6.1"
     },
     "require-dev": {
