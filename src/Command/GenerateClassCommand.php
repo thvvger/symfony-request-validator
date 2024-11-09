@@ -30,7 +30,7 @@ class GenerateClassCommand extends Command
     {
         $className = $input->getArgument('className');
 
-        $this->fileGenerator->generateClass($className, false);
+        $this->fileGenerator->generateClass($className);
 
         $output->writeln("Class $className generated successfully in src/Request.");
 
