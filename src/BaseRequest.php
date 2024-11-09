@@ -7,13 +7,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class BaseRequest
 {
-    protected array $errors = [];
-
     public function __construct(
         protected ValidatorInterface $validator,
         protected RequestStack $requestStack,
@@ -29,11 +26,27 @@ class BaseRequest
 
     protected function populate(): void
     {
-        $requestData = $this->getRequest()->toArray();
-        foreach ($requestData as $property => $value) {
-            $attribute = $this->camelCase($property);
+        $request = $this->getRequest();
+        $reflection = new \ReflectionClass($this);
+
+        // Fonction générique pour peupler les données
+        $this->populateData($request->request->all(), $reflection);
+        $this->populateData($request->files->all(), $reflection);
+    }
+
+    /**
+     * Fonction pour peupler les propriétés de la classe avec les données de la requête
+     *
+     * @param array $data
+     * @param \ReflectionClass $reflection
+     */
+    protected function populateData(array $data, \ReflectionClass $reflection): void
+    {
+        foreach ($data as $property => $value) {
+            $attribute = self::camelCase($property);
             if (property_exists($this, $attribute)) {
-                $this->{$attribute} = $value;
+                $reflectionProperty = $reflection->getProperty($attribute);
+                $reflectionProperty->setValue($this, $value);
             }
         }
     }
@@ -41,16 +54,14 @@ class BaseRequest
     protected function validate(): void
     {
         $violations = $this->validator->validate($this);
-        if (count($violations) > 0) {
-            $this->handleValidationErrors($violations);
-        }
-    }
 
-    protected function handleValidationErrors(ConstraintViolationList $violations): void
-    {
+        if (count($violations) < 1) {
+            return;
+        }
+
         $errors = [];
         foreach ($violations as $violation) {
-            $attribute = $this->snakeCase($violation->getPropertyPath());
+            $attribute = self::snakeCase($violation->getPropertyPath());
             $errors[] = [
                 'property' => $attribute,
                 'value' => $violation->getInvalidValue(),
@@ -68,12 +79,12 @@ class BaseRequest
         exit;
     }
 
-    private function camelCase(string $attribute): string
+    private static function camelCase(string $attribute): string
     {
         return (new Convert($attribute))->toCamel();
     }
 
-    private function snakeCase(string $attribute): string
+    private static function snakeCase(string $attribute): string
     {
         return (new Convert($attribute))->toSnake();
     }
