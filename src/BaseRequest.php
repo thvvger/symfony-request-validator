@@ -71,7 +71,7 @@ class BaseRequest
 
         $response = new JsonResponse([
             'message' => $violations[0]->getPropertyPath()  . ' ' . $violations[0]->getMessage(),
-            'errors' => $errors
+            'errorsList' => $errors
         ], Response::HTTP_BAD_REQUEST);
 
         $response->send();
