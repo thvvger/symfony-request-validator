@@ -1,6 +1,5 @@
 {
     "name": "thvvger/symfony-request-validator",
-    "version": "1.0.1",
     "description": "Validate symfony request and return JSON response",
     "type": "symfony-bundle",
     "minimum-stability": "dev",
