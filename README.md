@@ -1,5 +1,7 @@
 <br />
 
+<span id="readme-top"><span>
+
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -88,7 +90,7 @@ To get a local copy up and running follow these simple example steps.
 To generate a request class, use the following command:
 
 ```shell
-  php bin/console make:request YourClassName
+  php bin/console make:request TestRequest
 ```
 
 This will generate a PHP file in the src/Request/ directory with a base structure for your request class.
@@ -101,15 +103,20 @@ Here’s an example of a class generated after running the command:
     
     use Symfony\Component\Validator\Constraints\NotBlank;
     use Symfony\Component\Validator\Constraints\Type;
-    use Thvvger\RequestValidator\FormRequest\FileRequestValidator;
+    use Thvvger\RequestValidator\BaseRequest;
     
-    class YourClassName extends FileRequestValidator
+    class TestRequest extends BaseRequest
     {
         #[NotBlank]
         #[Type('string')]
-        public readonly string $structure;
+        public readonly string $name;
+        
+        // add other properties
     }
 ```
+
+## Example Usage in Your Controller
+After generating the `TestRequest` class with the relevant validation logic, you can use it within a controller to handle incoming requests, perform validation, and execute any necessary logic (such as file generation).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -118,22 +125,30 @@ Here’s an example of a class generated after running the command:
 Ensure that the bundle is registered in `config/bundles.php:
 
 ```php
-    return [
-        Thvvger\RequestValidator\RequestValidatorBundle::class => ['all' => true],
-    ];
+    #[Route('/test', methods: ['POST'])]
+    public function test(TestRequest $request): JsonResponse
+    {
+        //...
+        
+        // Return a success message after the request is processed
+        return new JsonResponse([
+            'message' => 'Request exécuted succesfully',
+        ]);
+    }
 ```
 
-## Example Command Usage
+If validation fails (e.g., missing or invalid file), a response like the following will be returned:
 
-To generate a request class from the command line, you can use:
+```json
 
-`php bin/console make:request TestRequest`
-
-This will generate a `TestRequest.php` file in the `src/Request/` folder with necessary validation constraints.`
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+{
+   "message": "Validation error",
+   "errors": {
+      "fichier": "This value is invalid",
+      "someProperty": "This value cannot be blank."
+   }
+}
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
