@@ -27,12 +27,20 @@ class BaseRequest
     protected function populate(): void
     {
         $request = $this->getRequest();
-        $reflection = new \ReflectionClass($this);
 
-        // Fonction générique pour peupler les données
-        $this->populateData($request->request->all(), $reflection);
-        $this->populateData($request->files->all(), $reflection);
+        $json = [];
+
+        try {
+            $json = $request->toArray();
+        } catch (\Exception $exception) {
+            // Ignorer l'exception si le contenu n'est pas JSON
+        }
+
+        $data = array_merge($json, $request->request->all(), $request->files->all());
+
+        $this->populateData($data, new \ReflectionClass($this));
     }
+
 
     /**
      * Fonction pour peupler les propriétés de la classe avec les données de la requête
@@ -43,9 +51,22 @@ class BaseRequest
     protected function populateData(array $data, \ReflectionClass $reflection): void
     {
         foreach ($data as $property => $value) {
-            $attribute = self::camelCase($property);
-            if (property_exists($this, $attribute)) {
-                $reflectionProperty = $reflection->getProperty($attribute);
+            if (property_exists($this, $property)) {
+                $reflectionProperty = $reflection->getProperty($property);
+                $type = $reflectionProperty->getType();
+
+                if ($type) {
+                    $expectedType = $type->getName();
+
+                    // Vérifie si le type de la valeur correspond au type attendu
+                    if (
+                        ($expectedType === \Symfony\Component\HttpFoundation\File\UploadedFile::class && !$value instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) ||
+                        ($expectedType !== \Symfony\Component\HttpFoundation\File\UploadedFile::class && gettype($value) !== strtolower($expectedType))
+                    ) {
+                        continue; // Ignore l'affectation si le type ne correspond pas
+                    }
+                }
+
                 $reflectionProperty->setValue($this, $value);
             }
         }
@@ -64,7 +85,7 @@ class BaseRequest
             $errors[$violation->getPropertyPath()] = $violation->getMessage();
 
         $response = new JsonResponse([
-            'message' => $violations[0]->getPropertyPath()  . ' ' . $violations[0]->getMessage(),
+            'message' => 'Erreur de validation',
             'errors' => $errors
         ], Response::HTTP_BAD_REQUEST);
 
