@@ -75,12 +75,23 @@ To get a local copy up and running follow these simple example steps.
             - { name: 'console.command' }  # Register the command for Symfony's console
     ```
 
-    - The `FileGenerator` service is configured with `autowire` and `autoconfigure` to automatically inject dependencies.
-    - The `GenerateClassCommand` is registered as a console command, allowing you to execute it from the command line using `php bin/console generate:class`.
+   - The `FileGenerator` service is configured with `autowire` and `autoconfigure` to automatically inject dependencies.
+   - The `GenerateClassCommand` is registered as a console command, allowing you to execute it from the command line using `php bin/console generate:class`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## Configuration
+
+Ensure that the bundle is registered in `config/bundles.php:
+
+```php
+    return [
+        Thvvger\RequestValidator\RequestValidatorBundle::class => ['all' => true],
+    ];
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -118,11 +129,6 @@ Here’s an example of a class generated after running the command:
 ## Example Usage in Your Controller
 After generating the `TestRequest` class with the relevant validation logic, you can use it within a controller to handle incoming requests, perform validation, and execute any necessary logic (such as file generation).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Configuration
-
-Ensure that the bundle is registered in `config/bundles.php:
 
 ```php
     #[Route('/test', methods: ['POST'])]
@@ -149,6 +155,9 @@ If validation fails (e.g., missing or invalid file), a response like the followi
    }
 }
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
