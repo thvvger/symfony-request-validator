@@ -52,31 +52,34 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    composer require thvvger/symfony-request-validator
    ```
-2. Configure the Services :
-   After installing the bundle, you need to register the services for the `FileGenerator` and `GenerateClassCommand`.
+   2. Configure the Services :
+      After installing the bundle, you need to register the services for the `FileGenerator` and `GenerateClassCommand`.
 
-   Add the following configuration to your `config/services.yaml`:
+      Add the following configuration to your `config/services.yaml`:
 
-    ```yaml
-    # Register FileGenerator service
-    Thvvger\RequestValidator\Services\FileGenerator:
-        autowire: true
-        autoconfigure: true
-        arguments:
-            $projectDir: '%kernel.project_dir%'  # Inject the project directory path
+       ```yaml
+      services:
+       #....
+      
+          # Register FileGenerator service
+          Thvvger\RequestValidator\Services\FileGenerator:
+              autowire: true
+              autoconfigure: true
+              arguments:
+                  $projectDir: '%kernel.project_dir%'  # Inject the project directory path
+   
+          # Register GenerateClassCommand as a console command
+          Thvvger\RequestValidator\Command\GenerateClassCommand:
+              autowire: true
+              autoconfigure: true
+              arguments:
+                  $fileGenerator: '@Thvvger\RequestValidator\Services\FileGenerator'  # Inject the FileGenerator service
+              tags:
+                  - { name: 'console.command' }  # Register the command for Symfony's console
+       ```
 
-    # Register GenerateClassCommand as a console command
-    Thvvger\RequestValidator\Command\GenerateClassCommand:
-        autowire: true
-        autoconfigure: true
-        arguments:
-            $fileGenerator: '@Thvvger\RequestValidator\Services\FileGenerator'  # Inject the FileGenerator service
-        tags:
-            - { name: 'console.command' }  # Register the command for Symfony's console
-    ```
-
-   - The `FileGenerator` service is configured with `autowire` and `autoconfigure` to automatically inject dependencies.
-   - The `GenerateClassCommand` is registered as a console command, allowing you to execute it from the command line using `php bin/console generate:class`.
+      - The `FileGenerator` service is configured with `autowire` and `autoconfigure` to automatically inject dependencies.
+      - The `GenerateClassCommand` is registered as a console command, allowing you to execute it from the command line using `php bin/console generate:class`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
